@@ -9,8 +9,6 @@ const debug = std.debug;
 
 pub fn main() !void {
     const stdout = try std.io.getStdOut();
-    try stdout.write("hello world\n");
-
     var buffer = try std.Buffer.initSize(debug.global_allocator, 1024);
 
     var map = std.hash_map.AutoHashMap(u64, u2).init(debug.global_allocator);

@@ -2,16 +2,23 @@
 // 
 // (my first non-trivial (for me) Zig program)
 //
-// reads from standard input, printing lines it has not yet seen.
+// Reads from standard input, printing lines it has not yet seen. Limited to
+// lines of 4096 bytes, until I get a chance to look into better way.
 
 const std = @import("std");
 const debug = std.debug;
 
 pub fn main() !void {
     const stdout = try std.io.getStdOut();
-    var buffer = try std.Buffer.initSize(debug.global_allocator, 1024);
 
-    var map = std.hash_map.AutoHashMap(u64, u2).init(debug.global_allocator);
+    var arena = std.heap.ArenaAllocator.init(std.heap.direct_allocator);
+    defer arena.deinit();
+
+    const allocator = &arena.allocator;
+
+    var buffer = try std.Buffer.initSize(allocator, 4096);
+
+    var map = std.hash_map.AutoHashMap(u64, u2).init(allocator);
     defer map.deinit();
 
     while (true) {

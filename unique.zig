@@ -18,7 +18,7 @@ pub fn main() !void {
 
     var buffer = try std.Buffer.initSize(allocator, 4096);
 
-    var map = std.hash_map.AutoHashMap(u64, u2).init(allocator);
+    var map = std.hash_map.AutoHashMap(u64, bool).init(allocator);
     defer map.deinit();
 
     while (true) {
@@ -32,7 +32,7 @@ pub fn main() !void {
         if (!map.contains(h)) {
             try stdout.write(line);
             try stdout.write("\n");
-            _ = try map.put(h, 1);
+            _ = try map.put(h, true);
         }
     }
 }

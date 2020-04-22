@@ -21,8 +21,6 @@ pub fn main() !void {
     var line_buf: [4096]u8 = undefined;
 
     while (try stdin.readUntilDelimiterOrEof(&line_buf, '\n')) |line| {
-        if (line.len == 0) break;
-
         const h = std.hash.Fnv1a_64.hash(line);
         if (!map.contains(h)) {
             try stdout.print("{}\n", .{line});

@@ -2,8 +2,8 @@
 //
 // (my first non-trivial (for me) Zig program)
 //
-// Reads from standard input, printing lines it has not yet seen. Limited to
-// lines of 4096 bytes, until I get a chance to look into better way.
+// Reads from standard input, printing lines to standard output that it has not
+// yet seen.
 
 const std = @import("std");
 const math = std.math;

@@ -1,2 +1,2 @@
-unique: unique.zig
+build:
 	zig build

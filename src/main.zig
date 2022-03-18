@@ -16,22 +16,24 @@ pub fn main() anyerror!void {
     var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
     defer arena.deinit();
 
-    const allocator = &arena.allocator;
+    const allocator = arena.allocator();
     var map = std.hash_map.AutoHashMap(u64, bool).init(allocator);
     defer map.deinit();
 
     while (true) {
-        const eline = stdin.readUntilDelimiterAlloc(allocator, '\n', math.maxInt(usize));
-        if (eline) |line| {
-            const h = std.hash.Fnv1a_64.hash(line);
-            if (!map.contains(h)) {
-                try stdout.print("{s}\n", .{line});
-                try map.put(h, true);
+        const eoline = stdin.readUntilDelimiterOrEofAlloc(allocator, '\n', math.maxInt(usize));
+        if (eoline) |oline| {
+            if (oline) |line| {
+                const h = std.hash.Fnv1a_64.hash(line);
+                if (!map.contains(h)) {
+                    try stdout.print("{s}\n", .{line});
+                    try map.put(h, true);
+                }
+            } else {
+                break;
             }
         } else |err| {
-            if (err != error.EndOfStream) {
-                try stderr.print("{s}\n", .{err});
-            }
+            try stderr.print("{s}\n", .{err});
             break;
         }
     }

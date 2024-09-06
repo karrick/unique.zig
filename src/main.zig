@@ -9,7 +9,10 @@ const std = @import("std");
 const math = std.math;
 
 pub fn main() anyerror!void {
-    const stdin = std.io.bufferedReader(std.io.getStdIn().reader()).reader();
+    const in = std.io.getStdIn();
+    var buf = std.io.bufferedReader(in.reader());
+    var stdin = buf.reader();
+
     const stdout = std.io.getStdOut().writer();
     const stderr = std.io.getStdErr().writer();
 
@@ -33,7 +36,7 @@ pub fn main() anyerror!void {
                 break;
             }
         } else |err| {
-            try stderr.print("{s}\n", .{err});
+            try stderr.print("{any}\n", .{err});
             break;
         }
     }
